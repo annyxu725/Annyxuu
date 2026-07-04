@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anny Xu — E-commerce & Digital Marketing Portfolio</title>
+  <style>
+    /*
+      Anny Xu Portfolio — single-file website
+      Replace all placeholder image URLs with your own photos/work screenshots when ready.
+      Visual direction: minimal, editorial, artful; inspired by soft blur, olive green, serif typography,
+      slow-scroll rhythm and floating objects from the reference video.
+    */
+
+    :root {
+      --olive: #223606;
+      --olive-2: #304813;
+      --cream: #f5f1e8;
+      --paper: #fbf8ef;
+      --ink: #18200d;
+      --muted: #767667;
+      --line: rgba(24, 32, 13, 0.16);
+      --white: #fffaf0;
+      --pink: #f3a5c9;
+      --green: #9df1a3;
+      --blue: #9fd9ff;
+      --red: #ff765d;
+      --violet: #bda7ff;
+      --shadow: 0 22px 70px rgba(23, 32, 9, 0.12);
+      --serif: Georgia, 'Times New Roman', Times, serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ease: cubic-bezier(.19, 1, .22, 1);
+      --blue-purple-1: #dfe8ff;
+      --blue-purple-2: #d8c8ff;
+      --blue-purple-3: #8e7cff;
+      --blue-purple-4: #4f46e5;
+      --blue-purple-dark: #211447;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -3;
+      background:
+        linear-gradient(rgba(24, 32, 13, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24, 32, 13, .045) 1px, transparent 1px),
+        var(--cream);
+      background-size: 9vw 9vw, 9vw 9vw, auto;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background: radial-gradient(circle at 70% 10%, rgba(255, 255, 255, .8), transparent 26%),
+        radial-gradient(circle at 18% 90%, rgba(255, 255, 255, .35), transparent 28%);
+      opacity: .6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--cream);
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      transition: opacity 900ms var(--ease), visibility 900ms var(--ease);
+      overflow: hidden;
+    }
+
+    .loader::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(157, 241, 163, .72), transparent 24%),
+        radial-gradient(circle at 18% 52%, rgba(189, 167, 255, .68), transparent 27%),
+        radial-gradient(circle at 72% 70%, rgba(255, 118, 93, .58), transparent 24%),
+        radial-gradient(circle at 42% 76%, rgba(159, 217, 255, .62), transparent 25%);
+      pointer-events: none;
+    }
+
+    .loader::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(rgba(34, 54, 6, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 54, 6, .06) 1px, transparent 1px),
+        rgba(245, 241, 232, .22);
+      background-size: 9vw 9vw, 9vw 9vw, auto;
+      backdrop-filter: blur(22px) saturate(1.12);
+      -webkit-backdrop-filter: blur(22px) saturate(1.12);
+      pointer-events: none;
+    }
+
+    .loader>* {
+      position: relative;
+      z-index: 2;
+    }
+
+    .loader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader__logo {
+      font-family: var(--serif);
+      font-weight: 700;
+      line-height: .82;
+      letter-spacing: -.08em;
+      font-size: clamp(2.2rem, 6vw, 5.4rem);
+      text-align: center;
+    }
+
+    .loader__sub {
+      margin-top: 1.2rem;
+      font-size: .78rem;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      opacity: .78;
+      font-family: var(--sans);
+      font-weight: 400;
+    }
+
+    .site-frame {
+      position: fixed;
+      inset: 14px;
+      border: 1px solid rgba(24, 32, 13, .1);
+      pointer-events: none;
+      z-index: 50;
+      mix-blend-mode: multiply;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      padding: 24px clamp(18px, 4vw, 56px);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+
+    .brand,
+    .nav {
+      pointer-events: auto;
+    }
+
+    .brand {
+      font-family: var(--serif);
+      font-weight: 700;
+      line-height: .82;
+      letter-spacing: -.06em;
+      font-size: 1.1rem;
+      width: 64px;
+    }
+
+    .brand span {
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: .24rem;
+      font-size: .76rem;
+      text-align: right;
+      letter-spacing: -.02em;
+    }
+
+    .nav a {
+      opacity: .76;
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+
+    .nav a:hover {
+      opacity: 1;
+      transform: translateX(-3px);
+    }
+
+    .vertical-note {
+      position: fixed;
+      right: 0;
+      top: 45%;
+      z-index: 80;
+      display: flex;
+      writing-mode: vertical-rl;
+      transform: translateY(-50%);
+      background: #0a0a08;
+      color: var(--cream);
+      font-size: .67rem;
+      letter-spacing: .12em;
+      padding: 18px 9px;
+      text-transform: uppercase;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      min-height: 100svh;
+      padding: clamp(96px, 14vw, 160px) clamp(20px, 7vw, 112px);
+      position: relative;
+    }
+
+    .section-kicker {
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .display {
+      font-family: var(--serif);
+      font-weight: 400;
+      letter-spacing: -.065em;
+      line-height: .92;
+      margin: 0;
+      font-size: clamp(2.7rem, 7vw, 8.2rem);
+    }
+
+    .display .pill-word {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      vertical-align: middle;
+    }
+
+    .about-display {
+      font-size: clamp(2.3rem, 4.8vw, 5.4rem);
+      line-height: .95;
+      max-width: 850px;
+    }
+
+    .mini-portrait {
+      width: clamp(44px, 6vw, 82px);
+      height: clamp(44px, 6vw, 82px);
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(24, 32, 13, .2);
+      transform: translateY(.08em);
+      filter: saturate(.9) contrast(.98);
+    }
+
+    .hero-sub {
+      max-width: 570px;
+      margin-top: clamp(20px, 4vw, 46px);
+      margin-left: min(34vw, 460px);
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      line-height: 1.55;
+      color: #333822;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+      margin-top: 1.4rem;
+    }
+
+    .tag,
+    .contact-chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .54rem .8rem .52rem;
+      background: rgba(255, 250, 240, .45);
+      backdrop-filter: blur(8px);
+      font-size: .8rem;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .orb {
+      position: absolute;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      filter: blur(16px) saturate(1.25);
+      opacity: .8;
+      z-index: -1;
+      animation: float 9s var(--ease) infinite alternate;
+      mix-blend-mode: multiply;
+    }
+
+    .orb--green {
+      background: radial-gradient(circle, var(--green), rgba(157, 241, 163, 0));
+      top: 18%;
+      right: 12%;
+      --size: clamp(110px, 18vw, 250px);
+    }
+
+    .orb--violet {
+      background: radial-gradient(circle, var(--violet), rgba(189, 167, 255, 0));
+      top: 34%;
+      left: 6%;
+      --size: clamp(120px, 22vw, 300px);
+      animation-delay: -3s;
+    }
+
+    .orb--red {
+      background: radial-gradient(circle, var(--red), rgba(255, 118, 93, 0));
+      bottom: 20%;
+      right: 24%;
+      --size: clamp(95px, 16vw, 230px);
+      animation-delay: -5s;
+    }
+
+    .orb--blue {
+      background: radial-gradient(circle, var(--blue), rgba(159, 217, 255, 0));
+      bottom: 8%;
+      left: 36%;
+      --size: clamp(120px, 18vw, 260px);
+      animation-delay: -1s;
+    }
+
+    @keyframes float {
+      from {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      to {
+        transform: translate3d(24px, -34px, 0) scale(1.08);
+      }
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, .82fr) 1.18fr;
+      gap: clamp(24px, 8vw, 110px);
+      align-items: end;
+    }
+
+    .portrait-card {
+      position: relative;
+      min-height: 520px;
+      border-radius: 34px;
+      overflow: hidden;
+      background: #e8dfce;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(24, 32, 13, .12);
+    }
+
+    .portrait-card img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      filter: grayscale(.12) contrast(.92) saturate(.85);
+    }
+
+    .about-copy .display {
+      font-size: clamp(3rem, 6vw, 7.2rem);
+    }
+
+    .about-body {
+      margin-top: 1.8rem;
+      max-width: 650px;
+      font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+      line-height: 1.65;
+      color: #343b24;
+    }
+
+    .strengths {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .7rem;
+      margin-top: 2.2rem;
+    }
+
+    .strength {
+      padding: 1.2rem;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 250, 240, .5);
+      min-height: 116px;
+    }
+
+    .strength strong {
+      font-family: var(--serif);
+      font-size: 1.36rem;
+      font-weight: 400;
+      letter-spacing: -.04em;
+    }
+
+    .strength p {
+      margin: .5rem 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: .9rem;
+    }
+
+    .timeline {
+      max-width: 980px;
+      margin: 2.8rem auto 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .role {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: clamp(20px, 4vw, 72px);
+      padding: 2.2rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .role-meta {
+      font-size: .86rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .role-meta strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--ink);
+      letter-spacing: -.04em;
+      line-height: 1.05;
+      margin-bottom: .4rem;
+      font-weight: 400;
+    }
+
+    .role ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: .85rem;
+    }
+
+    .role li {
+      position: relative;
+      padding-left: 1.2rem;
+      color: #303820;
+      line-height: 1.48;
+    }
+
+    .role li::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--olive);
+      left: 0;
+      top: .62em;
+    }
+
+    .projects-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 2rem;
+    }
+
+    .projects-head .display {
+      font-size: clamp(3.2rem, 7vw, 8.6rem);
+    }
+
+    .project-note {
+      max-width: 350px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(14px, 2vw, 22px);
+    }
+
+    .project-card {
+      grid-column: span 4;
+      min-height: 470px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: rgba(255, 250, 240, .58);
+      padding: 14px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), background 500ms var(--ease);
+    }
+
+    .project-card:nth-child(2),
+    .project-card:nth-child(5) {
+      transform: translateY(54px);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+      background: rgba(255, 250, 240, .88);
+    }
+
+    .project-card:nth-child(2):hover,
+    .project-card:nth-child(5):hover {
+      transform: translateY(40px);
+    }
+
+    .project-media {
+      height: 255px;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      background: #ddd1bf;
+      border: 1px solid rgba(24, 32, 13, .1);
+    }
+
+    .project-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.85) contrast(.95);
+      transition: transform 900ms var(--ease);
+    }
+
+    .project-card:hover img {
+      transform: scale(1.06);
+    }
+
+    .project-media::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(circle at 28% 25%, rgba(157, 241, 163, .55), transparent 26%),
+        radial-gradient(circle at 75% 70%, rgba(255, 118, 93, .42), transparent 28%);
+      mix-blend-mode: screen;
+      opacity: .85;
+    }
+
+    .project-body {
+      padding: 1.05rem .55rem .35rem;
+    }
+
+    .project-body small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .72rem;
+    }
+
+    .project-body h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(1.65rem, 2.2vw, 2.55rem);
+      letter-spacing: -.055em;
+      line-height: .98;
+      margin: .45rem 0 .8rem;
+    }
+
+    .project-body p {
+      color: #444835;
+      line-height: 1.45;
+      margin: 0;
+      font-size: .95rem;
+    }
+
+    .card-arrow {
+      position: absolute;
+      right: 24px;
+      bottom: 22px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      background: rgba(255, 250, 240, .75);
+    }
+
+    .skills-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: clamp(28px, 7vw, 96px);
+      align-items: start;
+    }
+
+    .skill-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .72rem;
+      align-content: flex-start;
+    }
+
+    .skill-cloud .tag {
+      font-size: clamp(.82rem, 1vw, .96rem);
+      padding: .72rem 1rem;
+    }
+
+    .bars {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .bar-card {
+      border: 1px solid rgba(59, 176, 125, 0.28);
+      border-radius: 22px;
+      background: linear-gradient(135deg,
+          rgba(235, 246, 248, 0.72),
+          rgba(206, 233, 255, 0.58));
+      padding: 1.1rem;
+      box-shadow: 0 18px 45px rgba(88, 72, 210, 0.08);
+    }
+
+    .bar-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .78rem;
+    }
+
+    .bar-top strong {
+      font-family: var(--serif);
+      font-size: 1.28rem;
+      font-weight: 400;
+      letter-spacing: -.035em;
+    }
+
+    .bar-track {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(105, 123, 255, 0.16);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: var(--value);
+      border-radius: inherit;
+      background: linear-gradient(90deg, #85bff6, #a2bcfe, #cac9fe);
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    .is-visible .bar-fill {
+      transform: scaleX(1);
+    }
+
+    .contact {
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(157, 241, 163, .72), transparent 24%),
+        radial-gradient(circle at 18% 52%, rgba(189, 167, 255, .68), transparent 27%),
+        radial-gradient(circle at 72% 70%, rgba(255, 118, 93, .58), transparent 24%),
+        radial-gradient(circle at 42% 76%, rgba(159, 217, 255, .62), transparent 25%),
+        linear-gradient(rgba(34, 54, 6, .07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 54, 6, .07) 1px, transparent 1px);
+      background-size: auto, auto, auto, auto, 9vw 9vw, 9vw 9vw;
+      filter: blur(.2px);
+      pointer-events: none;
+    }
+
+    .contact::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: rgba(245, 241, 232, .28);
+      backdrop-filter: blur(22px) saturate(1.12);
+      -webkit-backdrop-filter: blur(22px) saturate(1.12);
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 960px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .contact .display {
+      font-size: clamp(3.5rem, 8vw, 9rem);
+    }
+
+    .contact p {
+      max-width: 590px;
+      margin: 1.6rem auto 0;
+      line-height: 1.6;
+      color: rgba(18, 28, 12, .72);
+    }
+
+    .contact-links {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: .7rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-chip {
+      border-color: rgba(34, 54, 6, .18);
+      background: rgba(255, 250, 240, .46);
+      color: var(--ink);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    footer {
+      position: absolute;
+      left: clamp(20px, 4vw, 60px);
+      bottom: 26px;
+      color: rgba(18, 28, 12, .55);
+      font-size: .72rem;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(14px, 4vw, 44px);
+    }
+
+    .modal.is-open {
+      display: flex;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(16, 19, 10, .52);
+      backdrop-filter: blur(14px);
+      animation: fadeIn 260ms ease both;
+    }
+
+    .modal-panel {
+      position: relative;
+      z-index: 1;
+      width: min(1080px, 100%);
+      max-height: min(86svh, 860px);
+      overflow: auto;
+      background: var(--paper);
+      border: 1px solid rgba(245, 241, 232, .32);
+      border-radius: 34px;
+      box-shadow: 0 40px 110px rgba(0, 0, 0, .34);
+      animation: rise 520ms var(--ease) both;
+    }
+
+    .modal-close {
+      position: sticky;
+      top: 14px;
+      float: right;
+      margin: 14px 14px 0 0;
+      z-index: 3;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 250, 240, .84);
+      cursor: pointer;
+    }
+
+    .modal-hero {
+      display: grid;
+      grid-template-columns: .98fr 1.02fr;
+      gap: 1.4rem;
+      padding: clamp(18px, 3vw, 32px);
+    }
+
+    .modal-image {
+      min-height: 420px;
+      border-radius: 26px;
+      overflow: hidden;
+      position: relative;
+      background: #ddd1bf;
+    }
+
+    .modal-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      filter: saturate(.9);
+    }
+
+    .modal-copy {
+      padding: clamp(10px, 2vw, 24px);
+    }
+
+    .modal-copy small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .modal-copy h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.3rem, 5vw, 5.6rem);
+      line-height: .9;
+      letter-spacing: -.065em;
+      margin: .8rem 0 1rem;
+    }
+
+    .modal-copy p {
+      line-height: 1.58;
+      color: #343b24;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      margin-top: 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .detail-cell {
+      background: var(--paper);
+      padding: 1rem;
+      min-height: 130px;
+    }
+
+    .detail-cell strong {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 400;
+      letter-spacing: -.035em;
+      font-size: 1.3rem;
+      margin-bottom: .6rem;
+    }
+
+    .detail-cell span {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: .9rem;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+      margin-top: 1.3rem;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 1rem;
+      background: rgba(255, 250, 240, .6);
+    }
+
+    .metric b {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 400;
+      letter-spacing: -.05em;
+      font-size: 2.15rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+      margin-top: .45rem;
+    }
+
+    .process {
+      padding: 0 clamp(18px, 3vw, 32px) clamp(22px, 3vw, 34px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .process-card {
+      border-top: 1px solid var(--line);
+      padding-top: 1.1rem;
+    }
+
+    .process-card h4 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.45rem;
+      margin: 0 0 .7rem;
+      letter-spacing: -.035em;
+    }
+
+    .process-card ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: #343b24;
+      line-height: 1.55;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(.985);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 900ms var(--ease), transform 900ms var(--ease);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .hero-sub {
+        margin-left: 0;
+      }
+
+      .about-grid,
+      .skills-wrap,
+      .modal-hero,
+      .process {
+        grid-template-columns: 1fr;
+      }
+
+      .portrait-card {
+        min-height: 440px;
+      }
+
+      .role {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .project-card {
+        grid-column: span 6;
+      }
+
+      .project-card:nth-child(2),
+      .project-card:nth-child(5) {
+        transform: none;
+      }
+
+      .project-card:nth-child(2):hover,
+      .project-card:nth-child(5):hover {
+        transform: translateY(-8px);
+      }
+
+      .projects-head {
+        display: block;
+      }
+
+      .project-note {
+        margin-top: 1rem;
+      }
+    }
+
+    @media (max-width: 680px) {
+      header {
+        padding: 18px;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .vertical-note {
+        display: none;
+      }
+
+      .site-frame {
+        inset: 8px;
+      }
+
+      section {
+        padding: 94px 18px;
+        min-height: auto;
+      }
+
+      .hero {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .display {
+        font-size: clamp(3rem, 17vw, 5.3rem);
+      }
+
+      .about-copy .display,
+      .projects-head .display,
+      .contact .display {
+        font-size: clamp(2.8rem, 15vw, 4.8rem);
+      }
+
+      .strengths,
+      .detail-grid,
+      .metric-row {
+        grid-template-columns: 1fr;
+      }
+
+      .project-grid {
+        display: block;
+      }
+
+      .project-card {
+        min-height: auto;
+        margin-bottom: 1rem;
+      }
+
+      .project-media {
+        height: 230px;
+      }
+
+      .modal {
+        padding: 8px;
+      }
+
+      .modal-panel {
+        border-radius: 24px;
+        max-height: 92svh;
+      }
+
+      .modal-image {
+        min-height: 280px;
+      }
+
+      footer {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        margin-top: 4rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .loader {
+        display: none;
+      }
+
+      .gallery-view .modal-metrics {
+        display: none;
+      }
+
+      .gallery-intro-card {
+        grid-column: 1 / -1;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 1.4rem;
+        background: rgba(255, 250, 240, .56);
+      }
+
+      .gallery-intro-card h3 {
+        font-family: var(--serif);
+        font-size: clamp(1.8rem, 3vw, 3rem);
+        margin: 0 0 .6rem;
+        letter-spacing: -.04em;
+      }
+
+      .gallery-intro-card p {
+        margin: 0;
+        color: rgba(18, 28, 12, .68);
+        line-height: 1.55;
+      }
+
+      .gallery-section {
+        margin-top: clamp(2rem, 4vw, 4rem);
+      }
+
+      .gallery-heading {
+        display: grid;
+        grid-template-columns: 58px 1fr;
+        gap: 1rem;
+        align-items: start;
+        margin-bottom: 1.2rem;
+      }
+
+      .gallery-heading span {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(18, 28, 12, .18);
+        display: grid;
+        place-items: center;
+        font-family: var(--serif);
+      }
+
+      .gallery-heading h3 {
+        font-family: var(--serif);
+        font-size: clamp(2rem, 4vw, 4rem);
+        line-height: .95;
+        letter-spacing: -.05em;
+        margin: 0;
+      }
+
+      .gallery-heading p {
+        max-width: 720px;
+        margin: .6rem 0 0;
+        color: rgba(18, 28, 12, .62);
+        line-height: 1.5;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: clamp(1rem, 2vw, 1.4rem);
+      }
+
+      .gallery-item {
+        border: 1px solid rgba(18, 28, 12, .14);
+        border-radius: 28px;
+        overflow: hidden;
+        background: rgba(255, 250, 240, .6);
+      }
+
+      .gallery-item img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        display: block;
+      }
+
+      .gallery-item div {
+        padding: 1rem;
+      }
+
+      .gallery-item h4 {
+        font-family: var(--serif);
+        font-size: 1.35rem;
+        line-height: 1;
+        letter-spacing: -.035em;
+        margin: 0 0 .45rem;
+      }
+
+      .gallery-item p {
+        margin: 0;
+        font-size: .92rem;
+        line-height: 1.45;
+        color: rgba(18, 28, 12, .62);
+      }
+
+      @media (max-width: 860px) {
+        .gallery-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-heading {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+
+
+
+    /* =========================================================
+       FINAL PURE WHITE GALLERY FIX
+       Keep this block at the very end of <style>.
+       It overrides earlier duplicate workflow / gallery styles.
+    ========================================================= */
+
+    #projectModal.gallery-view .modal-panel {
+      width: min(94vw, 1520px) !important;
+      max-width: 1520px !important;
+      max-height: min(90svh, 920px) !important;
+      padding: 0 !important;
+      overflow: auto !important;
+      background: var(--paper) !important;
+    }
+
+    #projectModal.gallery-view .modal-hero {
+      display: none !important;
+    }
+
+    #projectModal.gallery-view #modalDetails.detail-grid {
+      display: block !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 20px 28px 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+      grid-template-columns: none !important;
+    }
+
+    #projectModal.gallery-view #modalProcess.process {
+      display: block !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 18px 28px 30px !important;
+      background: transparent !important;
+      border: 0 !important;
+      grid-template-columns: none !important;
+      gap: 0 !important;
+    }
+
+    #projectModal.gallery-view .workflow-panel {
+      min-height: auto !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      border: 1px solid rgba(18, 28, 12, .12) !important;
+      border-radius: 28px !important;
+      padding: 24px 26px 20px !important;
+      background: rgba(255, 250, 240, .64) !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+    }
+
+    #projectModal.gallery-view .workflow-head {
+      margin-bottom: 18px !important;
+      max-width: 980px !important;
+    }
+
+    #projectModal.gallery-view .workflow-head h3 {
+      margin: 0 !important;
+      font-family: var(--serif) !important;
+      font-weight: 700 !important;
+      font-size: clamp(2.4rem, 4vw, 4.2rem) !important;
+      line-height: .92 !important;
+      letter-spacing: -.05em !important;
+    }
+
+    #projectModal.gallery-view .workflow-head p {
+      margin: 10px 0 0 !important;
+      max-width: 980px !important;
+      color: rgba(18, 28, 12, .68) !important;
+      line-height: 1.5 !important;
+      font-size: 1rem !important;
+    }
+
+    #projectModal.gallery-view .workflow-row {
+      width: 100% !important;
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1.2fr) 44px minmax(0, .85fr) !important;
+      gap: 18px !important;
+      align-items: stretch !important;
+    }
+
+    #projectModal.gallery-view .flow-card {
+      min-width: 0 !important;
+      width: 100% !important;
+      border: 1px solid rgba(18, 28, 12, .12) !important;
+      border-radius: 24px !important;
+      background: #fffdf8 !important;
+      padding: 22px !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+
+    #projectModal.gallery-view .step-badge {
+      display: inline-grid !important;
+      place-items: center !important;
+      min-width: 42px !important;
+      height: 42px !important;
+      padding: 0 .7rem !important;
+      border-radius: 999px !important;
+      background: #d97a43 !important;
+      color: #fff !important;
+      font-size: .95rem !important;
+      font-weight: 700 !important;
+      letter-spacing: .03em !important;
+    }
+
+    #projectModal.gallery-view .flow-card h4 {
+      margin: 14px 0 16px !important;
+      font-family: var(--serif) !important;
+      font-size: clamp(1.7rem, 2vw, 2.6rem) !important;
+      line-height: .94 !important;
+      letter-spacing: -.03em !important;
+    }
+
+    #projectModal.gallery-view .flow-card p {
+      margin: 0 !important;
+      color: rgba(18, 28, 12, .66) !important;
+      line-height: 1.42 !important;
+      font-size: .96rem !important;
+    }
+
+    #projectModal.gallery-view .flow-tools {
+      display: grid !important;
+      gap: 14px !important;
+    }
+
+    #projectModal.gallery-view .tool-chip,
+    #projectModal.gallery-view .generator-card {
+      border: 1px solid rgba(18, 28, 12, .10) !important;
+      border-radius: 18px !important;
+      padding: 14px 15px !important;
+      background: rgba(255, 248, 242, .82) !important;
+      box-sizing: border-box !important;
+    }
+
+    #projectModal.gallery-view .tool-chip strong,
+    #projectModal.gallery-view .generator-card strong {
+      display: block !important;
+      margin-bottom: 6px !important;
+      font-size: 1rem !important;
+      line-height: 1.1 !important;
+    }
+
+    #projectModal.gallery-view .tool-chip p,
+    #projectModal.gallery-view .generator-card p {
+      font-size: .9rem !important;
+      line-height: 1.36 !important;
+    }
+
+    #projectModal.gallery-view .generator-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+    }
+
+    #projectModal.gallery-view .flow-arrow {
+      display: grid !important;
+      place-items: center !important;
+      font-size: 2rem !important;
+      color: #d97a43 !important;
+      font-weight: 700 !important;
+      transform: none !important;
+      min-height: auto !important;
+    }
+
+    #projectModal.gallery-view .integration-note {
+      margin-top: 14px !important;
+      font-size: .95rem !important;
+      color: #3a8a52 !important;
+      font-weight: 600 !important;
+      line-height: 1.3 !important;
+    }
+
+    #projectModal.gallery-view .workflow-legend {
+      display: flex !important;
+      gap: 28px !important;
+      flex-wrap: wrap !important;
+      margin-top: 14px !important;
+      font-size: .95rem !important;
+      color: rgba(18, 28, 12, .68) !important;
+    }
+
+    #projectModal.gallery-view .output-section {
+      min-height: auto !important;
+      padding: 0 !important;
+      margin-top: 26px !important;
+    }
+
+    #projectModal.gallery-view .output-head {
+      margin-bottom: 12px !important;
+    }
+
+    #projectModal.gallery-view .output-head h3 {
+      margin: 0 !important;
+      font-family: var(--sans) !important;
+      font-size: clamp(1.7rem, 2.5vw, 2.6rem) !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+      letter-spacing: -.03em !important;
+    }
+
+    #projectModal.gallery-view .output-head p {
+      margin: 8px 0 0 !important;
+      font-size: 1rem !important;
+      line-height: 1.5 !important;
+      color: rgba(18, 28, 12, .68) !important;
+    }
+
+    #projectModal.gallery-view .output-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+      width: 100% !important;
+    }
+
+    #projectModal.gallery-view .output-card {
+      border-radius: 18px !important;
+      overflow: hidden !important;
+      background: #f3eee5 !important;
+      border: 1px solid rgba(18, 28, 12, .10) !important;
+    }
+
+    #projectModal.gallery-view .output-card img {
+      width: 100% !important;
+      display: block !important;
+      aspect-ratio: 4 / 5 !important;
+      object-fit: cover !important;
+    }
+
+    @media (max-width: 1100px) {
+      #projectModal.gallery-view .workflow-row {
+        grid-template-columns: 1fr !important;
+      }
+
+      #projectModal.gallery-view .flow-arrow {
+        display: none !important;
+      }
+
+      #projectModal.gallery-view .generator-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      #projectModal.gallery-view .output-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* 02 step: put generation tools together in one card */
+      #projectModal.gallery-view .generator-combo-card {
+        border: 1px solid rgba(18, 28, 12, .10);
+        border-radius: 18px;
+        padding: 16px 18px;
+        background: rgba(255, 248, 242, .82);
+        box-sizing: border-box;
+      }
+
+      #projectModal.gallery-view .generator-tools-line {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-bottom: .7rem;
+      }
+
+      #projectModal.gallery-view .generator-tools-line strong {
+        font-size: 1rem;
+        line-height: 1.1;
+        color: var(--ink);
+      }
+
+      #projectModal.gallery-view .green-sync {
+        color: #3a8a52;
+        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1;
+      }
+
+      #projectModal.gallery-view .generator-combo-card p {
+        margin: 0;
+        color: rgba(18, 28, 12, .62);
+        font-size: .92rem;
+        line-height: 1.45;
+      }
+
+      /* 03 step: make Canva sit at the same level as Pinterest / Instagram */
+      #projectModal.gallery-view .flow-card .tool-chip {
+        margin-top: 0;
+      }
+
+      /* ===== Workflow: tighter overall box ===== */
+      #projectModal.gallery-view .workflow-panel {
+        padding: 22px 22px 16px;
+      }
+
+      #projectModal.gallery-view .workflow-head {
+        margin-bottom: 16px;
+      }
+
+      #projectModal.gallery-view .workflow-row {
+        grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1.12fr) 34px minmax(0, .82fr);
+        gap: 14px;
+      }
+
+      #projectModal.gallery-view .flow-card {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      #projectModal.gallery-view .flow-card h4 {
+        margin: 12px 0 14px;
+      }
+
+      /* ===== Step 02: make it match Step 01 / 03 ===== */
+      #projectModal.gallery-view .generator-unified-card {
+        margin-top: 0;
+        padding: 16px 16px 14px;
+      }
+
+      #projectModal.gallery-view .generator-tools-line {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: .35rem;
+        margin-bottom: .6rem;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      #projectModal.gallery-view .generator-tools-line strong {
+        font-size: .9rem;
+        line-height: 1.1;
+      }
+
+      #projectModal.gallery-view .green-sync {
+        color: #3a8a52;
+        font-weight: 700;
+        font-size: .92rem;
+        line-height: 1;
+        flex: 0 0 auto;
+      }
+
+      #projectModal.gallery-view .generator-unified-card p {
+        margin: 0;
+        color: rgba(18, 28, 12, .62);
+        font-size: .9rem;
+        line-height: 1.42;
+      }
+
+      /* ===== Hide legend completely ===== */
+      #projectModal.gallery-view .workflow-legend {
+        display: none !important;
+      }
+
+      /* Force ChatGPT ↔ Gemini ↔ Nanobanana into one horizontal line */
+      #projectModal.gallery-view .generator-tools-line {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        gap: 0.28rem !important;
+        white-space: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+        margin-bottom: 0.65rem !important;
+      }
+
+      #projectModal.gallery-view .generator-tools-line strong,
+      #projectModal.gallery-view .green-sync {
+        font-size: 0.72rem !important;
+      }
+    }
+
+    #projectModal.gallery-view .green-sync {
+      display: inline !important;
+      color: #3a8a52 !important;
+      font-weight: 700 !important;
+      font-size: 0.78rem !important;
+      line-height: 1 !important;
+      flex: 0 0 auto !important;
+    }
+
+    #projectModal.gallery-view .workflow-row {
+      grid-template-columns: minmax(0, .95fr) 30px minmax(0, 1.35fr) 30px minmax(0, .8fr) !important;
+    }
+
+    #projectModal.gallery-view .generator-tools-line {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      flex-wrap: nowrap !important;
+      gap: 0.3rem !important;
+      white-space: nowrap !important;
+      width: 100% !important;
+      margin-bottom: 0.65rem !important;
+    }
+
+    #projectModal.gallery-view .gen-tool {
+      display: inline-flex !important;
+      font-size: 0.76rem !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      flex: 0 0 auto !important;
+    }
+
+    #projectModal.gallery-view .green-sync {
+      display: inline-flex !important;
+      color: #3a8a52 !important;
+      font-weight: 700 !important;
+      font-size: 0.76rem !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      flex: 0 0 auto !important;
+    }
+
+    .loader__logo,
+    .loader__sub {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: loaderTextIn 1.2s var(--ease) forwards;
+    }
+
+    .loader__sub {
+      animation-delay: .28s;
+    }
+
+    .loader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1.2s var(--ease), visibility 1.2s var(--ease);
+    }
+
+    .loader.is-hidden::before {
+      transform: scale(1.18) translateY(-4%);
+      opacity: .85;
+      transition: transform 1.35s var(--ease), opacity 1.35s var(--ease);
+    }
+
+    @keyframes loaderTextIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+        filter: blur(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* Home page text enters from top to bottom */
+    .hero .section-kicker,
+    .hero .display,
+    .hero .hero-sub,
+    .hero .tags {
+      opacity: 0;
+      transform: translateY(-32px);
+      filter: blur(8px);
+    }
+
+    body.site-ready .hero .section-kicker {
+      animation: heroDropIn .95s var(--ease) .15s forwards;
+    }
+
+    body.site-ready .hero .display {
+      animation: heroDropIn 1.05s var(--ease) .34s forwards;
+    }
+
+    body.site-ready .hero .hero-sub {
+      animation: heroDropIn 1s var(--ease) .62s forwards;
+    }
+
+    body.site-ready .hero .tags {
+      animation: heroDropIn .9s var(--ease) .82s forwards;
+    }
+
+    @keyframes heroDropIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* ===== More compact title size ===== */
+
+    .display,
+    .about-copy .display,
+    .projects-head .display,
+    .contact .display {
+      font-size: clamp(2.9rem, 5.4vw, 6rem) !important;
+      line-height: .96 !important;
+      letter-spacing: -.052em !important;
+    }
+
+    .about-display {
+      font-size: clamp(2.8rem, 5vw, 5.6rem) !important;
+      line-height: .98 !important;
+      max-width: 960px !important;
+    }
+
+    .hero .display {
+      font-size: clamp(3rem, 5.6vw, 6.2rem) !important;
+      line-height: .96 !important;
+    }
+
+    .contact .display {
+      font-size: clamp(2.9rem, 5.2vw, 5.8rem) !important;
+      line-height: .98 !important;
+    }
+
+    @media (max-width: 680px) {
+
+      .display,
+      .about-copy .display,
+      .projects-head .display,
+      .contact .display,
+      .hero .display,
+      .about-display {
+        font-size: clamp(2.4rem, 11vw, 3.8rem) !important;
+        line-height: 1 !important;
+      }
+    }
+
+    /* ===== Make all project cards use the second-card hover rhythm ===== */
+
+    .project-card {
+      transform: translateY(54px) !important;
+    }
+
+    .project-card:hover {
+      transform: translateY(40px) !important;
+      box-shadow: var(--shadow);
+      background: rgba(255, 250, 240, .88);
+    }
+
+    /* Remove different movement rules from earlier nth-child settings */
+    .project-card:nth-child(2),
+    .project-card:nth-child(5),
+    .project-card:nth-child(2):hover,
+    .project-card:nth-child(5):hover {
+      transform: inherit;
+    }
+
+    /* ===== Hero layout: shift content slightly right, keep layered structure ===== */
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: clamp(90px, 10vw, 130px) !important;
+      padding-bottom: clamp(80px, 8vw, 110px) !important;
+    }
+
+    /* top label + big headline: move right but still left-aligned */
+    .hero .section-kicker,
+    .hero .display {
+      width: min(1180px, 82vw);
+      margin-left: clamp(90px, 9vw, 180px) !important;
+      margin-right: auto !important;
+    }
+
+    .hero .display {
+      text-align: left;
+    }
+
+    /* intro paragraph: keep it further right */
+    .hero .hero-sub {
+      width: min(650px, 42vw);
+      margin-top: clamp(26px, 4vw, 46px) !important;
+      margin-left: clamp(520px, 42vw, 760px) !important;
+      margin-right: auto !important;
+    }
+
+    /* If screen is narrower, prevent it from being pushed off screen */
+    @media (max-width: 1100px) {
+
+      .hero .section-kicker,
+      .hero .display {
+        width: min(980px, 86vw);
+        margin-left: clamp(40px, 6vw, 90px) !important;
+      }
+
+      .hero .hero-sub {
+        width: min(620px, 60vw);
+        margin-left: clamp(260px, 32vw, 420px) !important;
+      }
+    }
+
+    /* Mobile: return to normal */
+    @media (max-width: 760px) {
+
+      .hero .section-kicker,
+      .hero .display,
+      .hero .hero-sub {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .project-body h3 {
+        font-size: clamp(1rem, 1.15vw, 1.35rem) !important;
+        line-height: 1.1 !important;
+        letter-spacing: -.03em !important;
+        margin: 0 0 .75rem !important;
+        white-space: nowrap !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loader" id="loader" aria-hidden="true">
+    <div>
+      <div class="loader__logo">anny<br />xu.</div>
+      <div class="loader__sub">digital commerce / brand material / social content</div>
+    </div>
+  </div>
+
+  <div class="site-frame"></div>
+  <header>
+    <a class="brand" href="#home" aria-label="Anny Xu home"><span>Anny</span><span>Xu.</span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#experience">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <div class="vertical-note">portfolio 2026</div>
+
+  <main>
+    <section class="hero" id="home">
+      <span class="orb orb--green"></span>
+      <span class="orb orb--violet"></span>
+      <span class="orb orb--red"></span>
+      <span class="orb orb--blue"></span>
+      <div class="section-kicker reveal">E-commerce × digital marketing × visual storytelling</div>
+      <h1 class="display reveal">
+        I build brand moments<br />
+        that can be <span class="pill-word">seen <img class="mini-portrait" src="MainPage-mini.JPG"
+            alt="Anny Xu portrait" /></span>,
+        clicked,<br />and remembered.
+      </h1>
+      <div class="hero-sub reveal">
+        I am Anny Xu, an e-commerce and digital marketing practitioner with a slightly unusual mix: platform operations,
+        campaign execution, social analytics, product visuals and a real interest in fashion aesthetics.
+        <div class="tags" aria-label="Core tags">
+          <span class="tag">E-commerce Ops</span>
+          <span class="tag">Digital Campaigns</span>
+          <span class="tag">Social Content</span>
+          <span class="tag">AI-assisted Visuals</span>
+          <span class="tag">Data Reporting</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about-grid">
+        <div class="portrait-card reveal">
+          <img src="Main_portrait.png" alt="Anny Xu portrait" />
+        </div>
+        <div class="about-copy reveal">
+          <div class="section-kicker">About me</div>
+          <h2 class="display about-display">
+            Real work.<br>
+            Critical thinking.<br>
+            Always curious.
+          </h2>
+          <p class="about-body">
+            I like the part where a brand idea becomes something practical: a product page, a campaign visual, a TikTok
+            edit, a marketplace listing that actually tells people what to do next. My background moves
+            between hospitality, consumer goods, B2B wholesale and fashion accessories, so I am comfortable translating
+            between visual taste, commercial details and platform requirements.
+          </p>
+          <div class="strengths">
+            <div class="strength"><strong>Platform-minded</strong>
+              <p>Independent site, Amazon, Etsy, Faire, TikTok Shop and hotel OTA-style channels.</p>
+            </div>
+            <div class="strength"><strong>Visual but grounded</strong>
+              <p>Campaign assets, product images, layout and performance checks.</p>
+            </div>
+            <div class="strength"><strong>Data-literate</strong>
+              <p>SPSS, Python, GA, SEMrush, Excel dashboards and social listening reports.</p>
+            </div>
+            <div class="strength"><strong>Fast learner</strong>
+              <p>I use AI tools for product visuals and editing, but keep the final output human and brand-safe.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="section-kicker reveal">Work timeline</div>
+      <div class="timeline">
+        <article class="role reveal">
+          <div class="role-meta"><strong>Pure White Accessories</strong>E-commerce & Digital Marketing
+            Assistant<br />Aug 2025 — Present</div>
+          <ul>
+            <li>Operate the brand website and wholesale / marketplace channels including Alibaba, Etsy and Faire,
+              covering product uploads, listings and day-to-day platform updates.</li>
+            <li>Design and publish campaign materials across TikTok, Instagram and Pinterest, keeping visuals consistent
+              with a leather accessories brand aesthetic.</li>
+            <li>Create product official images and short-form video edits with AI-assisted workflows, then refine them
+              for more natural, brand-appropriate use.</li>
+          </ul>
+        </article>
+        <article class="role reveal">
+          <div class="role-meta"><strong>Hello Straw Ltd</strong>Commercial Intern, UK<br />Nov 2024 — Jan 2025</div>
+          <ul>
+            <li>Prepared and checked quotations, contracts, purchase orders and invoices for 10+ business clients across
+              Europe
+              and Asia.</li>
+            <li>Supported UK trade show preparation, including vendor liaison, promotional materials, product layout and
+              newsletter product reports.</li>
+          </ul>
+        </article>
+        <article class="role reveal">
+          <div class="role-meta"><strong>Hilton Shanghai Hongqiao</strong>E-commerce Executive<br />Jan 2021 — Dec 2021
+          </div>
+          <ul>
+            <li>Managed product launches, campaign setup and listing optimisation across 10+ online sales platforms.
+            </li>
+            <li>Organised TikTok livestream activities that brought 1,000+ new followers and over £3,000 in sales.</li>
+            <li>Executed monthly campaigns and influencer activities, contributing to 10× sales conversion growth during
+              campaign periods and 20% customer acquisition growth.</li>
+          </ul>
+        </article>
+        <article class="role reveal">
+          <div class="role-meta"><strong>Ipsos Consulting</strong>Social Intelligence Analytics Intern<br />Jun 2020 —
+            Oct 2020</div>
+          <ul>
+            <li>Analysed 10M+ social media data points for brands including IKEA, Sephora and Coca-Cola.</li>
+            <li>Built competitor and influencer reports across 10+ campaigns and 20+ influencers.</li>
+            <li>Mapped engagement drivers that contributed to around 80% of brand-related interactions.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="projects-head reveal">
+        <div>
+          <div class="section-kicker">Selected projects</div>
+          <h2 class="display">Work that sits between taste and traction.</h2>
+        </div>
+      </div>
+      <div class="project-grid" id="projectGrid"></div>
+    </section>
+
+    <section id="skills">
+      <div class="skills-wrap">
+        <div class="reveal">
+          <div class="section-kicker">Skill tree</div>
+          <h2 class="display">A toolkit for small teams and fast-moving brands.</h2>
+        </div>
+        <div class="reveal">
+          <div class="skill-cloud" aria-label="Skills tag cloud">
+            <span class="tag">E-commerce Listing</span><span class="tag">Marketplace Ops</span><span class="tag">TikTok
+              Shop</span><span class="tag">Campaign Planning</span><span class="tag">Content Calendar</span><span
+              class="tag">Instagram</span><span class="tag">Pinterest</span><span class="tag">Canva</span><span
+              class="tag">Photoshop</span><span class="tag">AI Product Images</span><span class="tag">Video
+              Editing</span><span class="tag">Google Analytics</span><span class="tag">SEMrush</span><span
+              class="tag">Screaming Frog</span><span class="tag">SPSS</span><span class="tag">Python</span><span
+              class="tag">Tableau</span><span class="tag">Excel Pivot Tables</span><span class="tag">Cross-functional
+              Coordination</span><span class="tag">Supplier Communication</span>
+          </div>
+          <div class="bars" style="margin-top:2rem">
+            <div class="bar-card">
+              <div class="bar-top"><strong>E-commerce operations</strong><span>90%</span></div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--value:90%"></div>
+              </div>
+            </div>
+            <div class="bar-card">
+              <div class="bar-top"><strong>Digital campaign execution</strong><span>88%</span></div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--value:88%"></div>
+              </div>
+            </div>
+            <div class="bar-card">
+              <div class="bar-top"><strong>Social analytics & reporting</strong><span>84%</span></div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--value:84%"></div>
+              </div>
+            </div>
+            <div class="bar-card">
+              <div class="bar-top"><strong>Visual content production</strong><span>82%</span></div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--value:82%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-inner reveal">
+        <div class="section-kicker" style="color:rgba(245,241,232,.62)">Contact</div>
+        <h2 class="display">Let's make the brand feel easier to find, buy and remember.</h2>
+        <p>I am open to branding, social content, e-commerce operations and campaign support projects, especially where
+          the work needs both visual taste and commercial follow-through.</p>
+        <div class="contact-links">
+          <a class="contact-chip" href="mailto:annyxu999@gmail.com">annyxu999@gmail.com</a>
+          <span class="contact-chip">WeChat: Annyyxzx22</span>
+          <span class="contact-chip">LinkedIn: https://www.linkedin.com/in/anny-xu-9a41b1182</span>
+        </div>
+      </div>
+      <footer>© 2026 Anny Xu · Single-page portfolio prototype</footer>
+    </section>
+  </main>
+
+  <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel">
+      <button class="modal-close" type="button" aria-label="Close project" data-close>×</button>
+      <div class="modal-hero">
+        <div class="modal-image"><img id="modalImage" src="" alt="Project visual placeholder" /></div>
+        <div class="modal-copy">
+          <small id="modalMeta"></small>
+          <h2 id="modalTitle"></h2>
+          <p id="modalIntro"></p>
+          <div class="metric-row" id="modalMetrics"></div>
+        </div>
+      </div>
+      <div class="detail-grid" id="modalDetails"></div>
+      <div class="process" id="modalProcess"></div>
+    </div>
+  </div>
+
+  <script>
+    const projects = [
+      {
+        title: 'B2B Wholesale · Fashion Accessories Design',
+        card: 'AI-assisted product visuals, model imagery and poster materials for a fashion accessories business.',
+        image: 'purewhite-cover.PNG',
+        intro: 'AI-assisted visual workflow and selected outputs created for Pure White Accessories.',
+        type: 'gallery',
+
+        workflow: {
+          sources: [
+            { name: 'Pinterest', desc: 'Find fashion, styling and layout references.' },
+            { name: 'Instagram', desc: 'Track visual trends, campaign direction and brand mood.' }
+          ],
+          generators: [
+            { name: 'ChatGPT', desc: 'Generate brand-aligned visual directions and prompts.' },
+            { name: 'Gemini', desc: 'Explore alternative image ideas and refine visual consistency.' },
+            { name: 'Nanobanana', desc: 'Create product and model outputs for campaign use.' }
+          ],
+          finalTool: {
+            name: 'Canva',
+            desc: 'Final edit and refinement of usable brand materials, posters and social assets.'
+          }
+        },
+
+        gallery: {
+          product: [
+            {
+              image: 'purewhite-product-01.PNG',
+              caption: 'Product-led poster / campaign visual'
+            },
+            {
+              image: 'purewhite-product-02.PNG',
+              caption: 'AI-assisted product image for brand material'
+            },
+            {
+              image: 'purewhite-product-03.PNG',
+              caption: 'Product visual edited for social or listing use'
+            }
+          ],
+          model: [
+            {
+              image: 'purewhite-model-01.PNG',
+              caption: 'Model-led campaign poster'
+            },
+            {
+              image: 'purewhite-model-02.PNG',
+              caption: 'AI-assisted fashion model visual'
+            },
+            {
+              image: 'purewhite-model-03.PNG',
+              caption: 'Model-related social media / campaign material'
+            }
+          ]
+        }
+      },
+
+      {
+        title: 'Ipsos Consulting · Consumer insight',
+        card: 'Turned large-scale social conversations into competitor, campaign and influencer insights for consumer brands.',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+        intro: 'Before I worked directly in e-commerce, Ipsos trained me to read social data carefully: what people say, what drives engagement and how campaigns look next to competitors.',
+        metrics: [['10M+', 'data points analysed'], ['20+', 'influencers mapped'], ['80%', 'engagement drivers identified']],
+        details: [
+          ['Background', 'Global brands needed market trend, consumer profile and social campaign analysis across large data sets.'],
+          ['My role', 'Social listening, competitor analysis, campaign reporting, influencer mapping and presentation support.'],
+          ['Outcome', 'Clearer understanding of consumer conversations and the content / influencer patterns behind brand engagement.']
+        ],
+        process: [
+          ['Research focus', ['Tracked brand and competitor performance across social media.', 'Summarised campaign patterns and consumer motivations.', 'Built influencer matrices for comparison and selection.']],
+          ['Why it matters now', ['This experience helps me connect creative content with audience signals.', 'It also makes me careful with evidence: I prefer to test assumptions rather than decorate them.']]
+        ]
+      }
+    ];
+
+    const projectGrid = document.getElementById('projectGrid');
+    const modal = document.getElementById('projectModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalIntro = document.getElementById('modalIntro');
+    const modalMetrics = document.getElementById('modalMetrics');
+    const modalDetails = document.getElementById('modalDetails');
+    const modalProcess = document.getElementById('modalProcess');
+
+    projectGrid.innerHTML = projects.map((p, i) => `
+      <article class="project-card reveal" tabindex="0" role="button" aria-label="Open project: ${p.title}" data-index="${i}">
+        <div class="project-media">
+          <!-- Replace this placeholder cover with your own project screenshot/video thumbnail. -->
+          <img src="${p.image}" alt="${p.title} cover placeholder" />
+        </div>
+        <div class="project-body">
+          <h3>${p.title}</h3>
+          <p>${p.card}</p>
+        </div>
+        <div class="card-arrow">↗</div>
+      </article>
+    `).join('');
+
+    function openProject(index) {
+      const p = projects[index];
+
+      // 先恢复默认显示，避免从 gallery 切回普通项目时出问题
+      if (modalImage.parentElement) modalImage.parentElement.style.display = '';
+      modalMeta.style.display = '';
+      modalTitle.style.display = '';
+      modalIntro.style.display = '';
+      modalMetrics.style.display = '';
+
+      // ===== Gallery mode for Pure White =====
+      if (p.type === 'gallery') {
+        modal.classList.add('gallery-view');
+
+        const modalHero = modal.querySelector('.modal-hero');
+        if (modalHero) modalHero.style.display = 'none';
+
+        // 隐藏顶部重复内容：cover图 / meta / title / intro / metrics
+        if (modalImage.parentElement) modalImage.parentElement.style.display = 'none';
+        modalMeta.style.display = 'none';
+        modalTitle.style.display = 'none';
+        modalIntro.style.display = 'none';
+        modalMetrics.style.display = 'none';
+
+        // AI workflow
+        modalDetails.innerHTML = renderWorkflow(p.workflow);
+
+        // 两个瀑布流 gallery
+        modalProcess.innerHTML = `
+      ${renderMasonrySection(
+          'Product-related outputs',
+          'AI-generated product visuals, listing images and poster materials.',
+          p.gallery.product
+        )}
+
+      ${renderMasonrySection(
+          'Model-related outputs',
+          'AI-assisted model imagery, campaign posters and social visuals.',
+          p.gallery.model
+        )}
+    `;
+
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      // ===== Normal project mode =====
+      modal.classList.remove('gallery-view');
+
+      const modalHero = modal.querySelector('.modal-hero');
+      if (modalHero) modalHero.style.display = '';
+
+      modalImage.src = p.image;
+      modalMeta.textContent = p.meta;
+      modalTitle.textContent = p.title;
+      modalIntro.textContent = p.intro;
+
+      modalMetrics.innerHTML = p.metrics.map(m => `
+    <div class="metric">
+      <b>${m[0]}</b>
+      <span>${m[1]}</span>
+    </div>
+  `).join('');
+
+      modalDetails.innerHTML = p.details.map(d => `
+    <div class="detail-cell">
+      <h3>${d[0]}</h3>
+      <p>${d[1]}</p>
+    </div>
+  `).join('');
+
+      modalProcess.innerHTML = p.process.map(block => `
+    <div class="process-card">
+      <h4>${block[0]}</h4>
+      <ul>
+        ${block[1].map(item => `<li>${item}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function renderWorkflow(workflow) {
+      return `
+    <section class="workflow-panel">
+      <div class="workflow-head">
+        <h3>AI Workflow</h3>
+        <p>
+          From fashion references to brand-ready visuals: how I turn trend research into usable
+          product posters, model imagery and final campaign materials.
+        </p>
+      </div>
+
+      <div class="workflow-row">
+        <article class="flow-card flow-card--wide">
+          <span class="step-badge">01</span>
+          <h4>Trend Research</h4>
+          <div class="flow-tools">
+            ${workflow.sources.map(item => `
+              <div class="tool-chip">
+                <strong>${item.name}</strong>
+                <p>${item.desc}</p>
+              </div>
+            `).join('')}
+          </div>
+        </article>
+
+        <div class="flow-arrow one-way">→</div>
+
+     <article class="flow-card flow-card--wide">
+        <span class="step-badge">02</span>
+        <h4>Image Generation</h4>
+
+        <div class="tool-chip generator-unified-card">
+        <div class="generator-tools-line">
+        <span class="gen-tool">ChatGPT</span>
+        <span class="green-sync">↔</span>
+        <span class="gen-tool">Gemini</span>
+        <span class="green-sync">↔</span>
+        <span class="gen-tool">Nanobanana</span>
+      </div>
+
+          <p>
+            Use these tools together to translate visual references into brand-aligned product images,
+            model-led campaign visuals and poster directions.
+          </p>
+        </div>
+      </article>
+
+        <div class="flow-arrow one-way">→</div>
+
+        <article class="flow-card">
+  <span class="step-badge">03</span>
+  <h4>Final Creation</h4>
+
+  <div class="tool-chip">
+    <strong>${workflow.finalTool.name}</strong>
+    <p>${workflow.finalTool.desc}</p>
+  </div>
+</article>
+      </div>
+
+    </section>
+  `;
+    }
+
+    function renderMasonrySection(title, desc, items) {
+      return `
+    <section class="output-section">
+      <div class="output-head">
+        <h3>${title}</h3>
+        <p>${desc}</p>
+      </div>
+
+      <div class="output-grid">
+        ${items.map(item => `
+          <article class="output-card">
+            <img src="${item.image}" alt="${title}">
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `;
+    }
+
+    function closeProject() {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('click', (event) => {
+      const card = event.target.closest('.project-card');
+      if (card) openProject(card.dataset.index);
+      if (event.target.matches('[data-close]')) closeProject();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeProject();
+      if ((event.key === 'Enter' || event.key === ' ') && event.target.classList.contains('project-card')) {
+        event.preventDefault();
+        openProject(event.target.dataset.index);
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('.reveal, .bar-card').forEach(el => observer.observe(el));
+
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+
+      setTimeout(() => {
+        loader.classList.add('is-hidden');
+        document.body.classList.add('site-ready');
+      }, 1500);
+    });
+  </script>
+</body>
+
+</html>
