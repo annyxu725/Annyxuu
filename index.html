@@ -273,14 +273,84 @@
       max-width: 850px;
     }
 
+    /* Hero mini portrait: reveal from nothing into a circle */
+    .mini-portrait-wrap {
+      --portrait-size: clamp(44px, 6vw, 82px);
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      vertical-align: middle;
+      transform: translateY(.08em);
+      overflow: hidden;
+      opacity: 0;
+      flex: 0 0 auto;
+      will-change: width, height, opacity;
+    }
+
     .mini-portrait {
-      width: clamp(44px, 6vw, 82px);
-      height: clamp(44px, 6vw, 82px);
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       object-fit: cover;
       border: 1px solid rgba(24, 32, 13, .2);
-      transform: translateY(.08em);
-      filter: saturate(.9) contrast(.98);
+      opacity: 0;
+      transform: scale(1.14);
+      filter: blur(8px) saturate(.9) contrast(.98);
+      will-change: opacity, transform, filter;
+    }
+
+    body.site-ready .mini-portrait-wrap {
+      animation: miniPortraitCircleReveal 1.05s var(--ease) .9s forwards;
+    }
+
+    body.site-ready .mini-portrait-wrap .mini-portrait {
+      animation: miniPortraitImageReveal .95s var(--ease) 1.02s forwards;
+    }
+
+    @keyframes miniPortraitCircleReveal {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+
+      1% {
+        opacity: 1;
+      }
+
+      68% {
+        width: clamp(50px, 6.6vw, 90px);
+        height: clamp(50px, 6.6vw, 90px);
+        opacity: 1;
+      }
+
+      100% {
+        width: var(--portrait-size);
+        height: var(--portrait-size);
+        opacity: 1;
+      }
+    }
+
+    @keyframes miniPortraitImageReveal {
+      0% {
+        opacity: 0;
+        transform: scale(1.14);
+        filter: blur(8px) saturate(.9) contrast(.98);
+      }
+
+      55% {
+        opacity: 1;
+        transform: scale(1.04);
+        filter: blur(2px) saturate(.9) contrast(.98);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0) saturate(.9) contrast(.98);
+      }
     }
 
     .hero-sub {
@@ -1036,7 +1106,8 @@
         display: none;
       }
 
-      .vertical-note {
+      .vertical-note,
+      .lens-side-note {
         display: none;
       }
 
@@ -1855,15 +1926,847 @@
         margin: 0 0 .75rem !important;
         white-space: nowrap !important;
       }
+
+
+
     }
-    <!-- trigger redeploy -->
+
+    @media (prefers-reduced-motion: reduce) {
+      .mini-portrait-wrap {
+        width: var(--portrait-size) !important;
+        height: var(--portrait-size) !important;
+        opacity: 1 !important;
+      }
+
+      .mini-portrait {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: saturate(.9) contrast(.98) !important;
+      }
+    }
+
+
+    /* ===== My Lens photography page ===== */
+    .lens-page {
+      min-height: 100svh;
+      padding-top: clamp(104px, 11vw, 150px);
+      padding-bottom: clamp(88px, 10vw, 140px);
+      overflow: hidden;
+    }
+
+    .lens-page::before {
+      content: '';
+      position: absolute;
+      inset: clamp(74px, 7vw, 112px) clamp(14px, 3vw, 52px) clamp(40px, 5vw, 72px);
+      border: 1px solid rgba(24, 32, 13, .11);
+      border-radius: clamp(28px, 4vw, 54px);
+      background: rgba(255, 250, 240, .26);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .lens-hero {
+      max-width: 980px;
+      margin: 0 auto clamp(34px, 4vw, 58px);
+      text-align: center;
+    }
+
+    .lens-kicker {
+      margin-bottom: 1.1rem;
+    }
+
+    .lens-side-note {
+      position: absolute;
+      left: clamp(22px, 3.5vw, 58px);
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(24, 32, 13, .48);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .lens-side-note::before,
+    .lens-side-note::after {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 34px;
+      margin: .7rem auto;
+      background: rgba(24, 32, 13, .16);
+    }
+
+    .lens-script {
+      display: inline-block;
+      margin-bottom: .7rem;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1rem, 1.45vw, 1.35rem);
+      color: rgba(24, 32, 13, .68);
+      letter-spacing: .015em;
+    }
+
+    .lens-title {
+      font-family: var(--serif);
+      font-size: clamp(2.7rem, 7vw, 8.2rem);
+      font-weight: 400;
+      letter-spacing: -.065em;
+      line-height: .88;
+      margin: 0;
+    }
+
+    .lens-title em {
+      font-style: italic;
+      color: rgba(24, 32, 13, .68);
+      letter-spacing: -.06em;
+    }
+
+    .lens-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      margin-top: 1rem;
+      color: rgba(24, 32, 13, .48);
+      font-size: .86rem;
+    }
+
+    .lens-hint::before,
+    .lens-hint::after {
+      content: '';
+      width: 44px;
+      height: 1px;
+      background: rgba(24, 32, 13, .16);
+    }
+
+    .lens-board-wrap {
+      position: relative;
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: clamp(14px, 2vw, 24px);
+      border: 1px solid rgba(24, 32, 13, .11);
+      border-radius: 34px;
+      background: rgba(255, 250, 240, .54);
+      box-shadow: 0 24px 74px rgba(23, 32, 9, .08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .lens-board {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-auto-rows: clamp(128px, 14vw, 208px);
+      gap: clamp(12px, 1.25vw, 19px);
+      align-items: start;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .lens-tile {
+      --lift: 0px;
+      position: relative;
+      border: 0;
+      padding: 0;
+      width: 100%;
+      height: calc(100% + var(--extra, 0px));
+      transform: translateY(var(--lift)) rotate(var(--rot, 0deg));
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ddd1bf;
+      box-shadow: 0 13px 28px rgba(23, 32, 9, .12);
+      cursor: grab;
+      transition: box-shadow 280ms ease, filter 280ms ease, scale 280ms ease;
+    }
+
+    .lens-tile:active,
+    .lens-tile.is-dragging {
+      cursor: grabbing;
+    }
+
+    .lens-tile.is-dragging {
+      box-shadow: 0 30px 82px rgba(23, 32, 9, .2);
+      scale: 1.035;
+      transition: none;
+    }
+
+    .lens-tile:hover {
+      box-shadow: 0 22px 54px rgba(23, 32, 9, .16);
+      filter: saturate(1.04) contrast(1.02);
+    }
+
+    .lens-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      filter: saturate(.9) contrast(.96) brightness(1.02);
+      transition: transform 900ms var(--ease);
+    }
+
+    .lens-tile:hover img {
+      transform: scale(1.045);
+    }
+
+    .lens-tile::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 62%, rgba(16, 19, 10, .16));
+      opacity: 0;
+      transition: opacity 240ms ease;
+      pointer-events: none;
+    }
+
+    .lens-tile:hover::after {
+      opacity: 1;
+    }
+
+    .lens-tile:nth-child(1) {
+      --lift: 18px;
+      --extra: 14px;
+      --rot: -1.1deg;
+    }
+
+    .lens-tile:nth-child(2) {
+      --lift: -2px;
+      --extra: 48px;
+      --rot: .5deg;
+    }
+
+    .lens-tile:nth-child(3) {
+      --lift: 12px;
+      --extra: 0px;
+      --rot: -.4deg;
+    }
+
+    .lens-tile:nth-child(4) {
+      --lift: 28px;
+      --extra: 26px;
+      --rot: .9deg;
+    }
+
+    .lens-tile:nth-child(5) {
+      --lift: 4px;
+      --extra: 10px;
+      --rot: -.6deg;
+    }
+
+    .lens-tile:nth-child(6) {
+      --lift: 22px;
+      --extra: 38px;
+      --rot: .8deg;
+    }
+
+    .lens-tile:nth-child(7) {
+      --lift: 0px;
+      --extra: 34px;
+      --rot: .7deg;
+    }
+
+    .lens-tile:nth-child(8) {
+      --lift: 38px;
+      --extra: 0px;
+      --rot: -1deg;
+    }
+
+    .lens-tile:nth-child(9) {
+      --lift: -12px;
+      --extra: 60px;
+      --rot: .3deg;
+    }
+
+    .lens-tile:nth-child(10) {
+      --lift: 18px;
+      --extra: 14px;
+      --rot: -.8deg;
+    }
+
+    .lens-tile:nth-child(11) {
+      --lift: 46px;
+      --extra: 0px;
+      --rot: 1deg;
+    }
+
+    .lens-tile:nth-child(12) {
+      --lift: -2px;
+      --extra: 56px;
+      --rot: -.4deg;
+    }
+
+    .lens-tile:nth-child(13) {
+      --lift: 14px;
+      --extra: 18px;
+      --rot: -.5deg;
+    }
+
+    .lens-tile:nth-child(14) {
+      --lift: -22px;
+      --extra: 44px;
+      --rot: .8deg;
+    }
+
+    .lens-tile:nth-child(15) {
+      --lift: 24px;
+      --extra: 0px;
+      --rot: -.9deg;
+    }
+
+    .lens-tile:nth-child(16) {
+      --lift: -6px;
+      --extra: 50px;
+      --rot: .35deg;
+    }
+
+    .lens-tile:nth-child(17) {
+      --lift: 36px;
+      --extra: 20px;
+      --rot: -.25deg;
+    }
+
+    .lens-tile:nth-child(18) {
+      --lift: 2px;
+      --extra: 48px;
+      --rot: .65deg;
+    }
+
+    .lens-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 700;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4vw, 48px);
+    }
+
+    .lens-lightbox.is-open {
+      display: flex;
+    }
+
+    .lens-lightbox__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(16, 19, 10, .58);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .lens-lightbox__panel {
+      position: relative;
+      z-index: 1;
+      width: auto;
+      max-width: min(92vw, 1480px);
+      max-height: 90svh;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      border-radius: 0;
+      overflow: visible;
+      animation: rise 460ms var(--ease) both;
+    }
+
+    .lens-lightbox__panel img {
+      display: block;
+      width: auto;
+      max-width: min(92vw, 1480px);
+      max-height: 90svh;
+      object-fit: contain;
+      background: transparent;
+      border-radius: 0;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
+    }
+
+    .lens-lightbox__caption {
+      display: none;
+    }
+
+    .lens-lightbox__close {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 710;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 250, 240, .18);
+      background: rgba(255, 250, 240, .9);
+      cursor: pointer;
+      color: rgba(24, 32, 13, .9);
+    }
+
+    @media (max-width: 1100px) {
+      .lens-board {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-rows: 190px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .lens-page {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .lens-title {
+        font-size: clamp(3rem, 17vw, 5rem);
+      }
+
+      .lens-board-wrap {
+        padding: 12px;
+        border-radius: 26px;
+      }
+
+      .lens-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 152px;
+        gap: 10px;
+      }
+
+      .lens-tile {
+        --lift: 0px !important;
+        --extra: 0px !important;
+        --rot: 0deg !important;
+        border-radius: 12px;
+      }
+    }
+
+    /* ===== Final requested layout refinements ===== */
+    .section-kicker {
+      font-size: clamp(1rem, 1.08vw, 1.18rem) !important;
+      letter-spacing: .12em !important;
+      margin-bottom: clamp(1.2rem, 2vw, 1.8rem) !important;
+    }
+
+    /* Match secondary page hero titles to the Home title scale */
+    .about-copy .display,
+    .about-display,
+    .lens-title,
+    .contact .display {
+      font-size: clamp(3rem, 5.6vw, 6.2rem) !important;
+      line-height: .96 !important;
+      letter-spacing: -.052em !important;
+    }
+
+    .projects-head--simple {
+      display: block !important;
+      margin-bottom: clamp(1.6rem, 3vw, 2.6rem) !important;
+    }
+
+    .skills-wrap--rebalanced {
+      grid-template-columns: minmax(0, 1.08fr) minmax(330px, .92fr) !important;
+      gap: clamp(34px, 6vw, 92px) !important;
+      align-items: start !important;
+    }
+
+    .skills-left .skill-cloud {
+      margin-top: .15rem !important;
+      max-width: 760px !important;
+    }
+
+    .skills-right .bars {
+      margin-top: clamp(.2rem, .8vw, .8rem) !important;
+      gap: clamp(1rem, 1.5vw, 1.35rem) !important;
+    }
+
+    .skills-right .bar-card {
+      padding: clamp(1.05rem, 1.45vw, 1.35rem) !important;
+      border-color: rgba(24, 32, 13, .14) !important;
+      background: rgba(255, 250, 240, .56) !important;
+      box-shadow: 0 18px 52px rgba(23, 32, 9, .07) !important;
+    }
+
+    .skills-right .bar-top strong {
+      font-size: clamp(1.15rem, 1.35vw, 1.48rem) !important;
+    }
+
+    .skills-right .bar-track {
+      background: rgba(24, 32, 13, .11) !important;
+    }
+
+    .skills-right .bar-fill {
+      background: linear-gradient(90deg, #dfe8ff, #d8c8ff, #8e7cff) !important;
+    }
+
+    .contact .section-kicker {
+      color: rgba(18, 28, 12, .64) !important;
+    }
+
+    /* Contact page enters with the same top-to-bottom feeling as the homepage */
+    .contact .section-kicker,
+    .contact .contact-title,
+    .contact p,
+    .contact .contact-links {
+      opacity: 0;
+      transform: translateY(-32px);
+      filter: blur(8px);
+    }
+
+    .contact-inner.is-visible .section-kicker {
+      animation: heroDropIn .95s var(--ease) .08s forwards;
+    }
+
+    .contact-inner.is-visible .contact-title {
+      animation: heroDropIn 1.05s var(--ease) .28s forwards;
+    }
+
+    .contact-inner.is-visible p {
+      animation: heroDropIn 1s var(--ease) .62s forwards;
+    }
+
+    .contact-inner.is-visible .contact-links {
+      animation: heroDropIn .9s var(--ease) .84s forwards;
+    }
+
+    .click-word {
+      position: relative;
+      display: inline-block;
+      padding: 0 .035em;
+      white-space: nowrap;
+    }
+
+    .click-word::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      width: .52em;
+      height: .52em;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.25);
+      pointer-events: none;
+    }
+
+    .click-word::after {
+      content: '↖';
+      position: absolute;
+      right: -.34em;
+      bottom: -.1em;
+      font-family: var(--sans);
+      font-size: .22em;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1;
+      opacity: 0;
+      transform: translate(.36em, .36em) scale(.82);
+      pointer-events: none;
+    }
+
+    .contact-inner.is-visible .click-word--find::before,
+    .contact-inner.is-visible .click-word--find::after {
+      animation: cursorClick 1.05s var(--ease) 1.28s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--buy::before,
+    .contact-inner.is-visible .click-word--buy::after {
+      animation: cursorClick 1.05s var(--ease) 1.62s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--remember::before,
+    .contact-inner.is-visible .click-word--remember::after {
+      animation: cursorClick 1.05s var(--ease) 1.96s forwards;
+    }
+
+    @keyframes cursorClick {
+      0% {
+        opacity: 0;
+        transform: translate(.38em, .38em) scale(.82);
+      }
+      32% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      48% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(0, 0) scale(1.08);
+      }
+    }
+
+    .click-word::before {
+      animation-name: none;
+    }
+
+    .contact-inner.is-visible .click-word--find::before {
+      animation: clickRing 1.05s var(--ease) 1.28s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--buy::before {
+      animation: clickRing 1.05s var(--ease) 1.62s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--remember::before {
+      animation: clickRing 1.05s var(--ease) 1.96s forwards;
+    }
+
+    @keyframes clickRing {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.25);
+      }
+      42% {
+        opacity: .45;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.9);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .skills-wrap--rebalanced {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .section-kicker {
+        font-size: .92rem !important;
+      }
+
+      .about-copy .display,
+      .about-display,
+      .lens-title,
+      .contact .display {
+        font-size: clamp(2.4rem, 11vw, 3.8rem) !important;
+        line-height: 1 !important;
+      }
+    }
+
+
+
+    /* ===== Final refinements: modal sections, case-study cards, contact click words ===== */
+    #projectModal.gallery-view .workflow-head h3,
+    #projectModal.gallery-view .output-head h3,
+    #projectModal.case-view .case-head h3 {
+      font-family: var(--serif) !important;
+      font-weight: 700 !important;
+      font-size: clamp(2rem, 3.1vw, 3.35rem) !important;
+      line-height: .94 !important;
+      letter-spacing: -.045em !important;
+      margin: 0 !important;
+      color: var(--ink) !important;
+    }
+
+    #projectModal.gallery-view .workflow-panel,
+    #projectModal.gallery-view .output-section,
+    #projectModal.case-view .case-section {
+      border: 1px solid rgba(18, 28, 12, .12) !important;
+      border-radius: 28px !important;
+      background: rgba(255, 250, 240, .64) !important;
+      padding: 24px 26px 22px !important;
+      margin: 0 0 26px !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+
+    #projectModal.gallery-view .output-section {
+      min-height: auto !important;
+    }
+
+    #projectModal.gallery-view .output-head p,
+    #projectModal.case-view .case-head p {
+      margin: 10px 0 0 !important;
+      max-width: 980px !important;
+      color: rgba(18, 28, 12, .68) !important;
+      line-height: 1.5 !important;
+      font-size: 1rem !important;
+    }
+
+    #projectModal.case-view .modal-hero {
+      display: none !important;
+    }
+
+    #projectModal.case-view .modal-panel {
+      width: min(94vw, 1520px) !important;
+      max-width: 1520px !important;
+      max-height: min(90svh, 920px) !important;
+      padding: 0 !important;
+      overflow: auto !important;
+      background: var(--paper) !important;
+    }
+
+    #projectModal.case-view #modalDetails.detail-grid,
+    #projectModal.case-view #modalProcess.process {
+      display: block !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+      grid-template-columns: none !important;
+      gap: 0 !important;
+    }
+
+    #projectModal.case-view #modalDetails.detail-grid {
+      padding: 20px 28px 0 !important;
+    }
+
+    #projectModal.case-view #modalProcess.process {
+      padding: 0 28px 30px !important;
+    }
+
+    #projectModal.case-view .case-metrics {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+      margin-top: 18px !important;
+    }
+
+    #projectModal.case-view .case-metric {
+      border: 1px solid rgba(18, 28, 12, .12) !important;
+      border-radius: 22px !important;
+      background: #fffdf8 !important;
+      padding: 18px 20px !important;
+    }
+
+    #projectModal.case-view .case-metric b {
+      display: block !important;
+      font-family: var(--serif) !important;
+      font-weight: 700 !important;
+      font-size: clamp(2rem, 3vw, 3rem) !important;
+      line-height: .9 !important;
+      letter-spacing: -.04em !important;
+    }
+
+    #projectModal.case-view .case-metric span {
+      display: block !important;
+      margin-top: 8px !important;
+      color: rgba(18, 28, 12, .62) !important;
+      line-height: 1.25 !important;
+      font-size: .95rem !important;
+    }
+
+    #projectModal.case-view .case-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+    }
+
+    #projectModal.case-view .case-card {
+      border: 1px solid rgba(18, 28, 12, .10) !important;
+      border-radius: 24px !important;
+      background: #fffdf8 !important;
+      padding: 22px !important;
+      min-height: 190px !important;
+    }
+
+    #projectModal.case-view .case-badge {
+      display: inline-grid !important;
+      place-items: center !important;
+      min-width: 42px !important;
+      height: 42px !important;
+      padding: 0 .7rem !important;
+      border-radius: 999px !important;
+      background: #d97a43 !important;
+      color: #fff !important;
+      font-size: .95rem !important;
+      font-weight: 700 !important;
+      letter-spacing: .03em !important;
+      margin-bottom: 14px !important;
+    }
+
+    #projectModal.case-view .case-card h4 {
+      margin: 0 0 14px !important;
+      font-family: var(--serif) !important;
+      font-size: clamp(1.7rem, 2vw, 2.6rem) !important;
+      line-height: .94 !important;
+      letter-spacing: -.03em !important;
+      font-weight: 700 !important;
+    }
+
+    #projectModal.case-view .case-card p,
+    #projectModal.case-view .case-card li {
+      color: rgba(18, 28, 12, .66) !important;
+      line-height: 1.45 !important;
+      font-size: .96rem !important;
+    }
+
+    #projectModal.case-view .case-card ul {
+      margin: 0 !important;
+      padding-left: 1.05rem !important;
+    }
+
+    .click-word {
+      color: transparent;
+      text-shadow: none;
+    }
+
+    .click-word::before {
+      border-color: rgba(24, 32, 13, .88) !important;
+    }
+
+    .click-word::after {
+      color: rgba(24, 32, 13, .88) !important;
+    }
+
+    .contact-inner.is-visible .click-word--find {
+      animation: clickWordReveal .55s var(--ease) 1.74s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--buy {
+      animation: clickWordReveal .55s var(--ease) 2.08s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--remember {
+      animation: clickWordReveal .55s var(--ease) 2.42s forwards;
+    }
+
+    .contact-inner.is-visible .click-word--find::before {
+      animation-delay: 1.28s !important;
+    }
+
+    .contact-inner.is-visible .click-word--buy::before {
+      animation-delay: 1.62s !important;
+    }
+
+    .contact-inner.is-visible .click-word--remember::before {
+      animation-delay: 1.96s !important;
+    }
+
+    .contact-inner.is-visible .click-word--find::after {
+      animation: cursorClick 1.05s var(--ease) 1.28s forwards !important;
+    }
+
+    .contact-inner.is-visible .click-word--buy::after {
+      animation: cursorClick 1.05s var(--ease) 1.62s forwards !important;
+    }
+
+    .contact-inner.is-visible .click-word--remember::after {
+      animation: cursorClick 1.05s var(--ease) 1.96s forwards !important;
+    }
+
+    @keyframes clickWordReveal {
+      to {
+        color: var(--ink);
+      }
+    }
+
+    @media (max-width: 980px) {
+      #projectModal.case-view .case-grid,
+      #projectModal.case-view .case-metrics {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
   </style>
 </head>
 
 <body>
   <div class="loader" id="loader" aria-hidden="true">
     <div>
-      <div class="loader__logo">anny<br />xu.</div>
+      <div class="loader__logo">Anny<br />xu.</div>
       <div class="loader__sub">digital commerce / brand material / social content</div>
     </div>
   </div>
@@ -1876,6 +2779,7 @@
       <a href="#about">About</a>
       <a href="#experience">Work</a>
       <a href="#projects">Projects</a>
+      <a href="#lens">My Lens</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -1891,8 +2795,13 @@
       <div class="section-kicker reveal">E-commerce × digital marketing × visual storytelling</div>
       <h1 class="display reveal">
         I build brand moments<br />
-        that can be <span class="pill-word">seen <img class="mini-portrait" src="MainPage-mini.JPG"
-            alt="Anny Xu portrait" /></span>,
+        that can be
+        <span class="pill-word">
+          seen
+          <span class="mini-portrait-wrap">
+            <img class="mini-portrait" src="MainPage-mini.jpeg" alt="Anny Xu portrait" />
+          </span>
+        </span>,
         clicked,<br />and remembered.
       </h1>
       <div class="hero-sub reveal">
@@ -1993,22 +2902,17 @@
     </section>
 
     <section id="projects">
-      <div class="projects-head reveal">
-        <div>
-          <div class="section-kicker">Selected projects</div>
-          <h2 class="display">Work that sits between taste and traction.</h2>
-        </div>
+      <div class="projects-head reveal projects-head--simple">
+        <div class="section-kicker">Selected projects</div>
       </div>
       <div class="project-grid" id="projectGrid"></div>
     </section>
 
+
     <section id="skills">
-      <div class="skills-wrap">
-        <div class="reveal">
+      <div class="skills-wrap skills-wrap--rebalanced">
+        <div class="reveal skills-left">
           <div class="section-kicker">Skill tree</div>
-          <h2 class="display">A toolkit for small teams and fast-moving brands.</h2>
-        </div>
-        <div class="reveal">
           <div class="skill-cloud" aria-label="Skills tag cloud">
             <span class="tag">E-commerce Listing</span><span class="tag">Marketplace Ops</span><span class="tag">TikTok
               Shop</span><span class="tag">Campaign Planning</span><span class="tag">Content Calendar</span><span
@@ -2019,7 +2923,9 @@
               class="tag">Tableau</span><span class="tag">Excel Pivot Tables</span><span class="tag">Cross-functional
               Coordination</span><span class="tag">Supplier Communication</span>
           </div>
-          <div class="bars" style="margin-top:2rem">
+        </div>
+        <div class="reveal skills-right">
+          <div class="bars">
             <div class="bar-card">
               <div class="bar-top"><strong>E-commerce operations</strong><span>90%</span></div>
               <div class="bar-track">
@@ -2049,10 +2955,45 @@
       </div>
     </section>
 
+
+    <section class="lens-page" id="lens">
+      <div class="lens-side-note">Diary</div>
+      <div class="lens-hero reveal">
+        <div class="section-kicker lens-kicker">Visual diary</div>
+        <h2 class="lens-title">A visual diary of finding, feeling, and being inspired. </h2>
+        <span class="lens-hint">Drag any image, or click to enlarge</span>
+      </div>
+
+      <div class="lens-board-wrap reveal">
+        <div class="lens-board" id="lensBoard" aria-label="My Lens draggable photography moodboard">
+          <button class="lens-tile" type="button" data-full="Visual_1.jpg"><img src="Visual_1.jpg" alt="Visual diary photograph 1"></button>
+          <button class="lens-tile" type="button" data-full="Visual_2.jpg"><img src="Visual_2.jpg" alt="Visual diary photograph 2"></button>
+          <button class="lens-tile" type="button" data-full="Visual_3.jpg"><img src="Visual_3.jpg" alt="Visual diary photograph 3"></button>
+          <button class="lens-tile" type="button" data-full="Visual_4.jpg"><img src="Visual_4.jpg" alt="Visual diary photograph 4"></button>
+          <button class="lens-tile" type="button" data-full="Visual_5.jpg"><img src="Visual_5.jpg" alt="Visual diary photograph 5"></button>
+          <button class="lens-tile" type="button" data-full="Visual_6.jpg"><img src="Visual_6.jpg" alt="Visual diary photograph 6"></button>
+          <button class="lens-tile" type="button" data-full="Visual_7.jpg"><img src="Visual_7.jpg" alt="Visual diary photograph 7"></button>
+          <button class="lens-tile" type="button" data-full="Visual_8.jpg"><img src="Visual_8.jpg" alt="Visual diary photograph 8"></button>
+          <button class="lens-tile" type="button" data-full="Visual_9.jpg"><img src="Visual_9.jpg" alt="Visual diary photograph 9"></button>
+          <button class="lens-tile" type="button" data-full="Visual_10.jpg"><img src="Visual_10.jpg" alt="Visual diary photograph 10"></button>
+          <button class="lens-tile" type="button" data-full="Visual_11.jpg"><img src="Visual_11.jpg" alt="Visual diary photograph 11"></button>
+          <button class="lens-tile" type="button" data-full="Visual_12.jpg"><img src="Visual_12.jpg" alt="Visual diary photograph 12"></button>
+          <button class="lens-tile" type="button" data-full="Visual_13.jpg"><img src="Visual_13.jpg" alt="Visual diary photograph 13"></button>
+          <button class="lens-tile" type="button" data-full="Visual_14.jpg"><img src="Visual_14.jpg" alt="Visual diary photograph 14"></button>
+          <button class="lens-tile" type="button" data-full="Visual_15.jpg"><img src="Visual_15.jpg" alt="Visual diary photograph 15"></button>
+          <button class="lens-tile" type="button" data-full="Visual_16.jpg"><img src="Visual_16.jpg" alt="Visual diary photograph 16"></button>
+          <button class="lens-tile" type="button" data-full="Visual_17.jpg"><img src="Visual_17.jpg" alt="Visual diary photograph 17"></button>
+          <button class="lens-tile" type="button" data-full="Visual_18.jpg"><img src="Visual_18.jpg" alt="Visual diary photograph 18"></button>
+</div>
+      </div>
+    </section>
+
+
+
     <section class="contact" id="contact">
       <div class="contact-inner reveal">
-        <div class="section-kicker" style="color:rgba(245,241,232,.62)">Contact</div>
-        <h2 class="display">Let's make the brand feel easier to find, buy and remember.</h2>
+        <div class="section-kicker">Contact</div>
+        <h2 class="display contact-title">Let's make the brand feel easier to <span class="click-word click-word--find">find</span>, <span class="click-word click-word--buy">buy</span> and <span class="click-word click-word--remember">remember</span>.</h2>
         <p>I am open to branding, social content, e-commerce operations and campaign support projects, especially where
           the work needs both visual taste and commercial follow-through.</p>
         <div class="contact-links">
@@ -2064,6 +3005,16 @@
       <footer>© 2026 Anny Xu · Single-page portfolio prototype</footer>
     </section>
   </main>
+
+
+
+  <div class="lens-lightbox" id="lensLightbox" role="dialog" aria-modal="true" aria-label="Photography preview">
+    <div class="lens-lightbox__backdrop" data-lens-close></div>
+    <div class="lens-lightbox__panel">
+      <button class="lens-lightbox__close" type="button" aria-label="Close photo" data-lens-close>×</button>
+      <img id="lensLightboxImage" src="" alt="Selected photography preview" />
+    </div>
+  </div>
 
   <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-backdrop" data-close></div>
@@ -2110,50 +3061,45 @@
 
         gallery: {
           product: [
-            {
-              image: 'purewhite-product-01.PNG',
-              caption: 'Product-led poster / campaign visual'
-            },
-            {
-              image: 'purewhite-product-02.PNG',
-              caption: 'AI-assisted product image for brand material'
-            },
-            {
-              image: 'purewhite-product-03.PNG',
-              caption: 'Product visual edited for social or listing use'
-            }
+            { image: 'purewhite-product-01.PNG', caption: 'Product-led poster / campaign visual' },
+            { image: 'purewhite-product-02.PNG', caption: 'AI-assisted product image for brand material' },
+            { image: 'purewhite-product-03.PNG', caption: 'Product visual edited for social or listing use' }
           ],
           model: [
-            {
-              image: 'purewhite-model-01.PNG',
-              caption: 'Model-led campaign poster'
-            },
-            {
-              image: 'purewhite-model-02.PNG',
-              caption: 'AI-assisted fashion model visual'
-            },
-            {
-              image: 'purewhite-model-03.PNG',
-              caption: 'Model-related social media / campaign material'
-            }
+            { image: 'purewhite-model-01.PNG', caption: 'Model-led campaign poster' },
+            { image: 'purewhite-model-02.PNG', caption: 'AI-assisted fashion model visual' },
+            { image: 'purewhite-model-03.PNG', caption: 'Model-related social media / campaign material' }
           ]
         }
       },
 
       {
+        title: 'Hilton · TikTok seasonal campaign',
+        card: 'Planned and delivered a social commerce campaign linking TikTok content, livestreams and influencer activity to sales growth.',
+        image: 'hilton-cover.png',
+        type: 'case',
+        intro: 'A seasonal promotion campaign at Hilton Shanghai Hongqiao, designed to turn digital content, livestream moments and influencer activity into measurable engagement and sales.',
+        metrics: [['1,000+', 'new followers'], ['£3,000+', 'sales in one month'], ['10×', 'sales conversion growth']],
+        sections: [
+          ['Goal', 'Drive online engagement and sales on TikTok by combining seasonal content, event exposure, livestreaming and influencer collaboration.'],
+          ['Challenge', 'The campaign needed to align hotel brand messaging, platform partner requirements, visual materials, inventory information and live content delivery across different teams.'],
+          ['Execution', ['Created and released video content.', 'Supported livestream event preparation and platform coordination.', 'Worked with internal teams and influencers to keep assets, stock lists and campaign messages consistent.', 'Monitored engagement metrics and adjusted content direction based on audience responses.']],
+          ['Outcome', 'The campaign gained over 1,000 new followers, generated more than £3,000 in sales within one month, and contributed to 10× sales conversion growth during campaign periods.']
+        ]
+      },
+
+      {
         title: 'Ipsos Consulting · Consumer insight',
         card: 'Turned large-scale social conversations into competitor, campaign and influencer insights for consumer brands.',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
-        intro: 'Before I worked directly in e-commerce, Ipsos trained me to read social data carefully: what people say, what drives engagement and how campaigns look next to competitors.',
-        metrics: [['10M+', 'data points analysed'], ['20+', 'influencers mapped'], ['80%', 'engagement drivers identified']],
-        details: [
-          ['Background', 'Global brands needed market trend, consumer profile and social campaign analysis across large data sets.'],
-          ['My role', 'Social listening, competitor analysis, campaign reporting, influencer mapping and presentation support.'],
-          ['Outcome', 'Clearer understanding of consumer conversations and the content / influencer patterns behind brand engagement.']
-        ],
-        process: [
-          ['Research focus', ['Tracked brand and competitor performance across social media.', 'Summarised campaign patterns and consumer motivations.', 'Built influencer matrices for comparison and selection.']],
-          ['Why it matters now', ['This experience helps me connect creative content with audience signals.', 'It also makes me careful with evidence: I prefer to test assumptions rather than decorate them.']]
+        image: 'ipsos-cover.png',
+        type: 'case',
+        intro: 'A social intelligence project experience that trained me to read consumer conversations carefully: what people say, what drives engagement, and how campaigns perform next to competitors.',
+        metrics: [['10M+', 'social data points'], ['10+', 'campaigns reviewed'], ['80%', 'engagement drivers identified']],
+        sections: [
+          ['Background', 'Global brands needed market trend, consumer profile and campaign analysis across large social data sets, including social conversations, competitor movements and influencer activity.'],
+          ['My role', ['Analysed and interpreted large-scale social media conversations.', 'Built competitor landscape reports and campaign presentations.', 'Mapped KOL and influencer performance across campaign activity.', 'Translated social data into consumer insight and brand implications.']],
+          ['Research focus', ['Market trend and consumer profile identification.', 'Competitor campaign tracking and performance comparison.', 'Influencer / KOL engagement mapping.', 'Brand-related interaction drivers and social content patterns.']],
+          ['Outcome', 'Delivered structured insight reports for 5+ global brands, reviewed 10+ campaigns and 20+ influencers, and identified engagement drivers behind around 80% of brand-related interactions.']
         ]
       }
     ];
@@ -2167,6 +3113,79 @@
     const modalMetrics = document.getElementById('modalMetrics');
     const modalDetails = document.getElementById('modalDetails');
     const modalProcess = document.getElementById('modalProcess');
+
+
+
+    const lensBoard = document.getElementById('lensBoard');
+    const lensLightbox = document.getElementById('lensLightbox');
+    const lensLightboxImage = document.getElementById('lensLightboxImage');
+    let lensDrag = null;
+    let lensZ = 30;
+
+    function openLensPhoto(tile) {
+      lensLightboxImage.src = tile.dataset.full || tile.querySelector('img').src;
+      lensLightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLensPhoto() {
+      lensLightbox.classList.remove('is-open');
+      lensLightboxImage.src = '';
+      document.body.style.overflow = '';
+    }
+
+    function initLensInteractions() {
+      if (!lensBoard) return;
+      lensBoard.querySelectorAll('.lens-tile').forEach(tile => {
+        tile.addEventListener('pointerdown', event => {
+          if (event.button !== 0) return;
+          const currentX = Number(tile.dataset.x || 0);
+          const currentY = Number(tile.dataset.y || 0);
+          lensDrag = {
+            tile,
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            originX: currentX,
+            originY: currentY,
+            moved: false
+          };
+          tile.setPointerCapture(event.pointerId);
+          tile.classList.add('is-dragging');
+          tile.style.zIndex = ++lensZ;
+        });
+
+        tile.addEventListener('pointermove', event => {
+          if (!lensDrag || lensDrag.tile !== tile) return;
+          const dx = event.clientX - lensDrag.startX;
+          const dy = event.clientY - lensDrag.startY;
+          if (Math.abs(dx) + Math.abs(dy) > 6) lensDrag.moved = true;
+          const nextX = lensDrag.originX + dx;
+          const nextY = lensDrag.originY + dy;
+          tile.dataset.x = nextX;
+          tile.dataset.y = nextY;
+          tile.style.translate = `${nextX}px ${nextY}px`;
+        });
+
+        function finishDrag(event) {
+          if (!lensDrag || lensDrag.tile !== tile) return;
+          tile.classList.remove('is-dragging');
+          try { tile.releasePointerCapture(lensDrag.pointerId); } catch (e) { }
+          const shouldOpen = !lensDrag.moved;
+          lensDrag = null;
+          if (shouldOpen) openLensPhoto(tile);
+        }
+
+        tile.addEventListener('pointerup', finishDrag);
+        tile.addEventListener('pointercancel', finishDrag);
+      });
+    }
+
+    initLensInteractions();
+
+    document.addEventListener('click', (event) => {
+      if (event.target.matches('[data-lens-close]')) closeLensPhoto();
+    });
 
     projectGrid.innerHTML = projects.map((p, i) => `
       <article class="project-card reveal" tabindex="0" role="button" aria-label="Open project: ${p.title}" data-index="${i}">
@@ -2192,8 +3211,11 @@
       modalIntro.style.display = '';
       modalMetrics.style.display = '';
 
+      modal.classList.remove('case-view');
+
       // ===== Gallery mode for Pure White =====
       if (p.type === 'gallery') {
+        modal.classList.remove('case-view');
         modal.classList.add('gallery-view');
 
         const modalHero = modal.querySelector('.modal-hero');
@@ -2229,8 +3251,31 @@
         return;
       }
 
+
+      // ===== Case study mode for Hilton / Ipsos =====
+      if (p.type === 'case') {
+        modal.classList.remove('gallery-view');
+        modal.classList.add('case-view');
+
+        const modalHero = modal.querySelector('.modal-hero');
+        if (modalHero) modalHero.style.display = 'none';
+        if (modalImage.parentElement) modalImage.parentElement.style.display = 'none';
+        modalMeta.style.display = 'none';
+        modalTitle.style.display = 'none';
+        modalIntro.style.display = 'none';
+        modalMetrics.style.display = 'none';
+
+        modalDetails.innerHTML = renderCaseStudy(p);
+        modalProcess.innerHTML = '';
+
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
       // ===== Normal project mode =====
       modal.classList.remove('gallery-view');
+      modal.classList.remove('case-view');
 
       const modalHero = modal.querySelector('.modal-hero');
       if (modalHero) modalHero.style.display = '';
@@ -2265,6 +3310,40 @@
 
       modal.classList.add('is-open');
       document.body.style.overflow = 'hidden';
+    }
+
+
+    function renderCaseStudy(project) {
+      return `
+    <section class="case-section">
+      <div class="case-head">
+        <h3>${project.title}</h3>
+        <p>${project.intro}</p>
+      </div>
+      <div class="case-metrics">
+        ${project.metrics.map(m => `
+          <div class="case-metric">
+            <b>${m[0]}</b>
+            <span>${m[1]}</span>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+
+    <section class="case-section">
+      <div class="case-grid">
+        ${project.sections.map((section, idx) => `
+          <article class="case-card">
+            <span class="case-badge">${String(idx + 1).padStart(2, '0')}</span>
+            <h4>${section[0]}</h4>
+            ${Array.isArray(section[1])
+              ? `<ul>${section[1].map(item => `<li>${item}</li>`).join('')}</ul>`
+              : `<p>${section[1]}</p>`}
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `;
     }
 
     function renderWorkflow(workflow) {
@@ -2352,6 +3431,8 @@
 
     function closeProject() {
       modal.classList.remove('is-open');
+      modal.classList.remove('case-view');
+      modal.classList.remove('gallery-view');
       document.body.style.overflow = '';
     }
 
@@ -2361,7 +3442,7 @@
       if (event.target.matches('[data-close]')) closeProject();
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeProject();
+      if (event.key === 'Escape') { closeProject(); closeLensPhoto(); }
       if ((event.key === 'Enter' || event.key === ' ') && event.target.classList.contains('project-card')) {
         event.preventDefault();
         openProject(event.target.dataset.index);
